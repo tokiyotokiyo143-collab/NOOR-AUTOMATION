@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Noor Automation</title>
+<style>
+:root{--bg:#0a0a0a;--card:#16161a;--card2:#1e1e24;--pink:#ff2d95;--pink2:#ff6fb8;--txt:#f2f2f5;--mut:#9a9aa6;--ok:#2ecc71;--warn:#f5b041;--bad:#ff5a5a;--line:#2a2a33}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--txt);font:15px/1.4 system-ui,Roboto,sans-serif}
+#app{display:flex;flex-direction:column;height:100%}
+header{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:#0e0e12}
+header .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--pink),#7a1fff);display:flex;align-items:center;justify-content:center;font-weight:800;box-shadow:0 0 14px #ff2d9566}
+header h1{font-size:17px;margin:0;flex:1}header h1 small{display:block;font-size:11px;color:var(--mut);font-weight:400}
+header select{background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:5px;font-size:12px}
+main{flex:1;overflow-y:auto;padding:14px;padding-bottom:30px}
+nav{display:flex;overflow-x:auto;border-top:1px solid var(--line);background:#0e0e12;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:1 0 auto;min-width:68px;background:none;border:0;color:var(--mut);padding:8px 6px;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button .i{font-size:20px}nav button.on{color:var(--pink)}nav button.on .i{filter:drop-shadow(0 0 6px var(--pink))}
+h2{font-size:18px;margin:0 0 10px}h3{font-size:14px;margin:14px 0 6px;color:var(--pink2)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}.stat b{display:block;font-size:24px;color:var(--pink)}.stat span{color:var(--mut);font-size:12px}
+button.b,.b{background:var(--pink);color:#fff;border:0;border-radius:10px;padding:9px 14px;font-size:14px;font-weight:600}
+.b.g{background:var(--card2);border:1px solid var(--line);color:var(--txt)}.b.d{background:#3a1217;color:var(--bad)}.b.s{padding:5px 10px;font-size:12px}.b.ok{background:#12351f;color:var(--ok)}
+input,textarea,select.f{width:100%;background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:9px;font-size:14px;margin:3px 0 8px;font-family:inherit}
+textarea{min-height:80px}label{font-size:12px;color:var(--mut)}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:0 0 auto}.row .grow{flex:1}
+.tag{display:inline-block;background:#2a1020;color:var(--pink2);border:1px solid #5a1e40;border-radius:20px;padding:1px 8px;font-size:11px;margin:1px 2px 1px 0}
+.pill{border-radius:20px;padding:1px 8px;font-size:11px}.pill.ok{background:#12351f;color:var(--ok)}.pill.no{background:#3a1217;color:var(--bad)}.pill.w{background:#3a2a0e;color:var(--warn)}
+.item{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}
+.av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#3a1a30,#1a1a30);display:flex;align-items:center;justify-content:center;color:var(--pink);font-weight:700;flex:0 0 auto}
+.mut{color:var(--mut);font-size:12px}.sec{display:flex;justify-content:space-between;align-items:center}
+.bub{max-width:82%;padding:8px 10px;border-radius:12px;margin:5px 0;font-size:14px;white-space:pre-wrap;word-wrap:break-word}
+.bub.out{background:#5a1040;margin-left:auto;border-bottom-right-radius:3px}.bub.in{background:var(--card2);border-bottom-left-radius:3px}.bub.note{background:#3a2a0e;margin:5px auto;font-size:12px;color:var(--warn)}
+.bub small{display:block;font-size:10px;color:#ffffff88;margin-top:3px}
+.modal{position:fixed;inset:0;background:#000b;display:flex;align-items:flex-end;z-index:50}
+.sheet{background:var(--card);width:100%;max-height:92%;overflow-y:auto;border-radius:18px 18px 0 0;padding:16px;border-top:2px solid var(--pink)}
+.bar{height:14px;background:var(--card2);border-radius:7px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),#7a1fff)}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--pink);color:#fff;padding:9px 16px;border-radius:20px;z-index:99;font-size:13px}
+.empty{text-align:center;color:var(--mut);padding:26px 10px}
+.warnbox{background:#2b2108;border:1px solid #5c4710;color:var(--warn);border-radius:12px;padding:10px;font-size:12px;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.chip{background:var(--card2);border:1px solid var(--line);border-radius:20px;padding:4px 11px;font-size:12px;color:var(--txt)}.chip.on{background:var(--pink);border-color:var(--pink)}
+</style></head><body>
+<div id="app">
+<header><div class="logo">N</div><h1><span id="shopname">Noor Automation</span><small>WhatsApp customer manager</small></h1><select id="actas" title="Who is using the app"></select></header>
+<main id="main"></main>
+<nav id="nav"></nav>
+</div>
+<script>
+'use strict';
+const KEY='noor_automation_v1';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);
+const now=()=>Date.now();
+function defaults(){return{
+ v:1,settings:{shop:'AN-NOOR Mobile Service Point',cc:'91',greetName:'Aleemu',signature:'- AN-NOOR Mobile Service Point, Annur'},
+ team:[{id:'t1',name:'Aleemu',role:'owner'}],actAs:'t1',
+ contacts:[],tags:['Customer','Repair pending','Seconds buyer','Wholesale','VIP'],
+ convos:{},// contactId -> {assignee,status,msgs:[{id,dir,text,at,by,kind}],unread}
+ templates:[
+  {id:'tp1',name:'Repair ready',cat:'Utility',body:'Hi {{name}}, your phone repair is ready. You can collect it at {{shop}} today. {{signature}}'},
+  {id:'tp2',name:'Payment reminder',cat:'Utility',body:'Hi {{name}}, a small reminder about the pending balance at {{shop}}. Please pay when you can. Thank you! {{signature}}'},
+  {id:'tp3',name:'New stock offer',cat:'Marketing',body:'Hi {{name}}! New back covers and tempered glass just came in at {{shop}}. Visit us for a special price this week. Reply STOP to opt out. {{signature}}'},
+  {id:'tp4',name:'Second-hand phone available',cat:'Marketing',body:'Hi {{name}}, we have good second-hand phones in stock at {{shop}}. Tell us your budget and we will show you the best ones. Reply STOP to opt out.'}],
+ campaigns:[],// {id,name,tplId,tagFilter,createdAt,items:[{cid,text,state:'pending|sent|skipped'}]}
+ rules:[
+  {id:'r1',name:'Shop timing',on:true,kw:'timing, time, open, close',reply:'We are open every day. Please call or visit {{shop}} in Annur. {{signature}}'},
+  {id:'r2',name:'Display price',on:true,kw:'display, screen, price',reply:'Display price depends on the phone model. Please tell us your phone model and we will confirm the price. {{signature}}'},
+  {id:'r3',name:'Opt-out',on:true,kw:'stop, unsubscribe',reply:'You will not get offer messages from us again.',action:'optout'}],
+ faqs:[
+  {id:'f1',q:'What are your shop timings?',a:'We are open daily. Please call or visit {{shop}}, Annur.'},
+  {id:'f2',q:'Do you repair phone displays and batteries?',a:'Yes. We repair displays, batteries, charging ports and software issues. Bring the phone and we will check it for free.'},
+  {id:'f3',q:'Do you sell back covers and tempered glass?',a:'Yes, covers and tempered glass for most models: Vivo, Oppo, Samsung, Redmi, Realme, OnePlus, Moto and iPhone.'},
+  {id:'f4',q:'Do you have second hand phones?',a:'Yes, checked second-hand phones in different budgets. Tell us your budget.'}],
+ log:[]};}
+let S;
+function load(){try{S=JSON.parse(localStorage.getItem(KEY))||defaults();}catch(e){S=defaults();}
+ const d=defaults();for(const k in d)if(S[k]==null)S[k]=d[k];}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){toast('Storage full');}}
+function toast(t){const e=document.createElement('div');e.className='toast';e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2200);}
+const me=()=>S.team.find(t=>t.id===S.actAs)||S.team[0];
+const can=a=>{const r=me().role;if(r==='owner')return true;if(r==='admin')return a!=='team';return ['inbox','contacts'].includes(a);};
+function guard(a){if(!can(a)){toast('Your role cannot do this');return false;}return true;}
+function cname(c){return c.name||c.phone;}
+function normPhone(p){let d=String(p||'').replace(/[^\d]/g,'');if(!d)return'';d=d.replace(/^0+/,'');if(d.length===10)d=S.settings.cc+d;return d;}
+function fill(t,c){return String(t).replace(/\{\{\s*name\s*\}\}/gi,c?(c.name||'there'):'there').replace(/\{\{\s*shop\s*\}\}/gi,S.settings.shop).replace(/\{\{\s*signature\s*\}\}/gi,S.settings.signature);}
+function waLink(c,text){return 'https://wa.me/'+c.phone+'?text='+encodeURIComponent(text);}
+function openWA(c,text){const a=document.createElement('a');a.href=waLink(c,text);a.rel='noopener';document.body.appendChild(a);a.click();a.remove();}
+function convo(cid){return S.convos[cid]||(S.convos[cid]={assignee:null,status:'open',msgs:[],unread:0});}
+function addMsg(cid,dir,text,kind){const cv=convo(cid);cv.msgs.push({id:uid(),dir,text,at:now(),by:me().name,kind:kind||'msg'});if(dir==='in'){cv.unread++;cv.status='open';}save();}
+function fmt(ts){const d=new Date(ts);return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});}
+function logEv(t){S.log.push({at:now(),t});if(S.log.length>300)S.log.shift();}
+function modal(html){const m=document.createElement('div');m.className='modal';m.innerHTML='<div class="sheet">'+html+'</div>';m.addEventListener('click',e=>{if(e.target===m)m.remove();});document.body.appendChild(m);return m;}
+function closeM(){document.querySelectorAll('.modal').forEach(m=>m.remove());}
+// ---------- navigation
+const TABS=[['home','🏠','Home'],['inbox','💬','Inbox'],['contacts','👥','Contacts'],['templates','📝','Templates'],['broadcasts','📣','Broadcast'],['auto','⚡','Automation'],['faq','🤖','FAQ Bot'],['stats','📊','Stats'],['team','🧑‍🤝‍🧑','Team'],['settings','⚙️','Settings']];
+let tab='home',arg=null;
+function go(t,a){tab=t;arg=a||null;render();$('#main').scrollTop=0;}
+function render(){
+ $('#shopname').textContent='Noor Automation';
+ $('#nav').innerHTML=TABS.map(t=>`<button class="${t[0]===tab?'on':''}" onclick="go('${t[0]}')"><span class="i">${t[1]}</span>${t[2]}</button>`).join('');
+ $('#actas').innerHTML=S.team.map(t=>`<option value="${t.id}" ${t.id===S.actAs?'selected':''}>${esc(t.name)} (${t.role})</option>`).join('');
+ ({home:vHome,inbox:vInbox,chat:vChat,contacts:vContacts,templates:vTemplates,broadcasts:vBroadcasts,bc:vBc,auto:vAuto,faq:vFaq,stats:vStats,team:vTeam,settings:vSettings})[tab]();
+}
+$('#actas').onchange=e=>{S.actAs=e.target.value;save();render();};
+// ---------- home
+function dueFollow(){const t=new Date();t.setHours(23,59,59,999);return S.contacts.filter(c=>c.follow&&new Date(c.follow).getTime()<=t.getTime());}
+function vHome(){
+ const unread=Object.values(S.convos).reduce((a,c)=>a+(c.unread||0),0);
+ const optin=S.contacts.filter(c=>c.optin).length;
+ const due=dueFollow();
+ $('#main').innerHTML=`<h2>Welcome, ${esc(me().name)}</h2>
+ <div class="grid"><div class="stat"><b>${S.contacts.length}</b><span>Customers</span></div><div class="stat"><b>${optin}</b><span>Opted in for offers</span></div>
+ <div class="stat"><b>${unread}</b><span>Unread in inbox</span></div><div class="stat"><b>${S.campaigns.length}</b><span>Broadcasts</span></div></div>
+ <h3>Follow-ups due today (${due.length})</h3><div class="card">${due.length?due.map(c=>`<div class="item"><div class="av">${esc(cname(c)[0]||'?').toUpperCase()}</div><div class="grow" style="flex:1"><b>${esc(cname(c))}</b><div class="mut">${esc(c.followNote||'Follow up')}</div></div><button class="b s" onclick="go('chat','${c.id}')">Open</button></div>`).join(''):'<div class="mut">Nothing due.</div>'}</div>
+ <h3>Quick start</h3><div class="card"><div class="row" style="flex-wrap:wrap"><button class="b" onclick="editContact()">+ Add customer</button><button class="b g" onclick="go('templates')">Templates</button><button class="b g" onclick="go('broadcasts')">New broadcast</button></div></div>
+ <div class="warnbox">This app prepares and tracks your WhatsApp messages on this phone. Sending opens WhatsApp with the message filled in; you tap Send there. Automatic sending and receiving needs the WhatsApp Business API (see Settings).</div>`;}
+// ---------- contacts
+let cfilter={q:'',tag:''};
+function vContacts(){
+ let list=S.contacts.filter(c=>(!cfilter.tag||(c.tags||[]).includes(cfilter.tag))&&(!cfilter.q||(c.name+' '+c.phone).toLowerCase().includes(cfilter.q.toLowerCase())));
+ $('#main').innerHTML=`<div class="sec"><h2>Contacts (${S.contacts.length})</h2><div class="row"><button class="b g s" onclick="importC()">Import</button><button class="b s" onclick="editContact()">+ Add</button></div></div>
+ <input id="cq" placeholder="Search name or number" value="${esc(cfilter.q)}">
+ <div class="chips"><span class="chip ${!cfilter.tag?'on':''}" onclick="cfilter.tag='';vContacts()">All</span>${S.tags.map(t=>`<span class="chip ${cfilter.tag===t?'on':''}" onclick="cfilter.tag='${esc(t)}';vContacts()">${esc(t)}</span>`).join('')}</div>
+ <div class="card">${list.length?list.map(c=>`<div class="item"><div class="av">${esc(cname(c)[0]||'?').toUpperCase()}</div><div style="flex:1;min-width:0" onclick="go('chat','${c.id}')"><b>${esc(cname(c))}</b> <span class="pill ${c.optin?'ok':'no'}">${c.optin?'opt-in':'no opt-in'}</span><div class="mut">+${esc(c.phone)}</div><div>${(c.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div><button class="b g s" onclick="editContact('${c.id}')">Edit</button></div>`).join(''):'<div class="empty">No contacts yet. Add one or import a list.</div>'}</div>
+ <div class="row"><button class="b g s" onclick="manageTags()">Manage tags</button></div>`;
+ $('#cq').oninput=e=>{cfilter.q=e.target.value;const p=e.target.selectionStart;vContacts();const n=$('#cq');n.focus();n.setSelectionRange(p,p);};}
+function editContact(id){
+ const c=S.contacts.find(x=>x.id===id)||{tags:[],optin:false};
+ const m=modal(`<h2>${id?'Edit':'Add'} customer</h2><label>Name</label><input id="cn" value="${esc(c.name||'')}"><label>WhatsApp number (10 digits or with country code)</label><input id="cp" inputmode="tel" value="${esc(c.phone||'')}">
+ <label>Tags</label><div class="chips" id="ct">${S.tags.map(t=>`<span class="chip ${(c.tags||[]).includes(t)?'on':''}" data-t="${esc(t)}">${esc(t)}</span>`).join('')}</div>
+ <label><input type="checkbox" id="co" ${c.optin?'checked':''} style="width:auto;margin-right:6px">Customer agreed to receive offer messages (opt-in)</label>
+ <label>Follow-up date</label><input type="date" id="cf" value="${esc(c.follow||'')}"><label>Follow-up note</label><input id="cfn" value="${esc(c.followNote||'')}">
+ <label>Notes</label><textarea id="cno">${esc(c.notes||'')}</textarea>
+ <div class="row"><button class="b grow" id="cs">Save</button>${id?'<button class="b d" id="cd">Delete</button>':''}</div>`);
+ m.querySelectorAll('#ct .chip').forEach(e=>e.onclick=()=>e.classList.toggle('on'));
+ m.querySelector('#cs').onclick=()=>{const phone=normPhone(m.querySelector('#cp').value);if(phone.length<11){toast('Enter a valid number');return;}
+  if(S.contacts.some(x=>x.phone===phone&&x.id!==id)){toast('This number already exists');return;}
+  const o=id?c:{id:uid(),created:now()};Object.assign(o,{name:m.querySelector('#cn').value.trim(),phone,tags:[...m.querySelectorAll('#ct .chip.on')].map(e=>e.dataset.t),optin:m.querySelector('#co').checked,follow:m.querySelector('#cf').value,followNote:m.querySelector('#cfn').value,notes:m.querySelector('#cno').value});
+  if(o.optin&&!o.optinAt)o.optinAt=now();if(!id)S.contacts.push(o);logEv('Saved contact '+cname(o));save();closeM();render();};
+ const d=m.querySelector('#cd');if(d)d.onclick=()=>{if(!guard('delete'))return;if(confirm('Delete this contact?')){S.contacts=S.contacts.filter(x=>x.id!==id);delete S.convos[id];save();closeM();render();}};}
+function importC(){const m=modal(`<h2>Import contacts</h2><div class="mut">One per line: <b>name, number</b> (or only the number). Imported contacts are marked NOT opted-in; tick opt-in only for people who agreed.</div><textarea id="it" style="min-height:140px" placeholder="Ravi, 9876543210\nKumar, 9123456780"></textarea><div class="row"><label><input type="checkbox" id="io" style="width:auto;margin-right:6px">They all agreed to offers (opt-in)</label></div><button class="b" id="ig" style="width:100%">Import</button>`);
+ m.querySelector('#ig').onclick=()=>{let n=0,sk=0;m.querySelector('#it').value.split(/\n/).forEach(l=>{l=l.trim();if(!l)return;const parts=l.split(/[,\t;]/).map(x=>x.trim());let name='',ph='';if(parts.length>1){name=parts[0];ph=parts[1];}else ph=parts[0];const p=normPhone(ph);if(p.length<11||S.contacts.some(x=>x.phone===p)){sk++;return;}S.contacts.push({id:uid(),name,phone:p,tags:[],optin:m.querySelector('#io').checked,optinAt:m.querySelector('#io').checked?now():0,created:now()});n++;});save();closeM();toast(n+' added, '+sk+' skipped');render();};}
+function manageTags(){const m=modal(`<h2>Tags</h2><div id="tl">${S.tags.map((t,i)=>`<div class="item"><span class="grow" style="flex:1">${esc(t)}</span><button class="b d s" data-i="${i}">Remove</button></div>`).join('')}</div><input id="nt" placeholder="New tag"><button class="b" id="at" style="width:100%">Add tag</button>`);
+ m.querySelector('#at').onclick=()=>{const v=m.querySelector('#nt').value.trim();if(v&&!S.tags.includes(v)){S.tags.push(v);save();closeM();manageTags();}};
+ m.querySelectorAll('#tl .b').forEach(b=>b.onclick=()=>{const t=S.tags[+b.dataset.i];S.tags.splice(+b.dataset.i,1);S.contacts.forEach(c=>c.tags=(c.tags||[]).filter(x=>x!==t));save();closeM();manageTags();});}
+// ---------- inbox
+function suggest(text){const t=text.toLowerCase();let best=null;
+ S.rules.filter(r=>r.on).forEach(r=>{const hit=r.kw.split(',').map(x=>x.trim().toLowerCase()).filter(x=>x&&t.includes(x));if(hit.length&&(!best||hit.length>best.n))best={n:hit.length,r};});
+ return best?best.r:null;}
+function faqMatch(text){const w=s=>s.toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(x=>x.length>2);const tw=new Set(w(text));let best=null,bs=0;
+ S.faqs.forEach(f=>{const fw=new Set(w(f.q+' '+f.a));let sc=0;tw.forEach(x=>{if(fw.has(x))sc++;});const qw=w(f.q);qw.forEach(x=>{if(tw.has(x))sc+=1;});if(sc>bs){bs=sc;best=f;}});return bs>=2?best:null;}
+function vInbox(){
+ const rows=S.contacts.map(c=>({c,cv:S.convos[c.id]})).filter(x=>x.cv&&x.cv.msgs.length).sort((a,b)=>b.cv.msgs[b.cv.msgs.length-1].at-a.cv.msgs[a.cv.msgs.length-1].at);
+ $('#main').innerHTML=`<div class="sec"><h2>Team inbox</h2><button class="b s" onclick="newChat()">+ New chat</button></div>
+ <div class="warnbox">Customer replies are not received automatically. When a customer replies on WhatsApp, open their chat here and use "Log customer reply" so your team and the auto-reply rules can work on it.</div>
+ <div class="card">${rows.length?rows.map(({c,cv})=>{const l=cv.msgs[cv.msgs.length-1];const a=S.team.find(t=>t.id===cv.assignee);return `<div class="item" onclick="go('chat','${c.id}')"><div class="av">${esc(cname(c)[0]||'?').toUpperCase()}</div><div style="flex:1;min-width:0"><b>${esc(cname(c))}</b> ${cv.unread?`<span class="pill w">${cv.unread} new</span>`:''} <span class="pill ${cv.status==='open'?'ok':'no'}">${cv.status}</span><div class="mut" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(l.text)}</div><div class="mut">${a?'Assigned: '+esc(a.name):'Unassigned'} · ${fmt(l.at)}</div></div></div>`;}).join(''):'<div class="empty">No chats yet. Start one from a contact.</div>'}</div>`;}
+function newChat(){if(!S.contacts.length){toast('Add a contact first');return;}const m=modal(`<h2>Start chat</h2><select class="f" id="nc">${S.contacts.map(c=>`<option value="${c.id}">${esc(cname(c))} (+${c.phone})</option>`).join('')}</select><button class="b" id="go" style="width:100%">Open</button>`);m.querySelector('#go').onclick=()=>{const id=m.querySelector('#nc').value;closeM();go('chat',id);};}
+function vChat(){
+ const c=S.contacts.find(x=>x.id===arg);if(!c){go('inbox');return;}
+ const cv=convo(c.id);cv.unread=0;save();
+ const last=[...cv.msgs].reverse().find(m=>m.dir==='in');const sg=last?suggest(last.text):null;const fq=last&&!sg?faqMatch(last.text):null;
+ $('#main').innerHTML=`<div class="row"><button class="b g s" onclick="go('inbox')">‹ Back</button><div class="grow" style="flex:1"><b>${esc(cname(c))}</b><div class="mut">+${c.phone} ${c.optin?'· opted in':''}</div></div><button class="b ok s" onclick="openWA(S.contacts.find(x=>x.id==='${c.id}'),'')">Open WhatsApp</button></div>
+ <div class="row" style="margin:8px 0"><select class="f" id="as" style="margin:0"><option value="">Unassigned</option>${S.team.map(t=>`<option value="${t.id}" ${cv.assignee===t.id?'selected':''}>${esc(t.name)}</option>`).join('')}</select><button class="b g s" id="st">${cv.status==='open'?'Close chat':'Reopen'}</button></div>
+ <div id="msgs" style="min-height:120px">${cv.msgs.map(m=>`<div class="bub ${m.kind==='note'?'note':m.dir}">${esc(m.text)}<small>${m.kind==='note'?'Internal note · ':m.dir==='out'?'Sent by '+esc(m.by)+' · ':'Customer · '}${fmt(m.at)}</small></div>`).join('')||'<div class="empty">No messages yet.</div>'}</div>
+ ${sg?`<div class="card"><div class="mut">Suggested reply (rule: ${esc(sg.name)})</div><div>${esc(fill(sg.reply,c))}</div><button class="b s" id="us">Use this reply</button></div>`:fq?`<div class="card"><div class="mut">FAQ bot suggests</div><div>${esc(fill(fq.a,c))}</div><button class="b s" id="uf">Use this reply</button></div>`:''}
+ <textarea id="mt" placeholder="Type your message"></textarea>
+ <div class="row" style="flex-wrap:wrap"><button class="b" id="sd">Send on WhatsApp</button><button class="b g" id="tp">Template</button><button class="b g" id="li">Log customer reply</button><button class="b g" id="nt">Note</button></div>`;
+ $('#as').onchange=e=>{cv.assignee=e.target.value||null;save();toast('Assigned');};
+ $('#st').onclick=()=>{cv.status=cv.status==='open'?'closed':'open';save();vChat();};
+ const sendIt=t=>{if(!t.trim())return;addMsg(c.id,'out',t);logEv('Message to '+cname(c));openWA(c,t);vChat();};
+ $('#sd').onclick=()=>sendIt($('#mt').value);
+ if($('#us'))$('#us').onclick=()=>{const r=sg;if(r.action==='optout'){c.optin=false;save();}$('#mt').value=fill(r.reply,c);};
+ if($('#uf'))$('#uf').onclick=()=>{$('#mt').value=fill(fq.a,c);};
+ $('#nt').onclick=()=>{const t=$('#mt').value.trim();if(t){addMsg(c.id,'out',t,'note');vChat();}};
+ $('#li').onclick=()=>{const t=$('#mt').value.trim();if(!t){toast('Type or paste what the customer said, then tap again');return;}addMsg(c.id,'in',t);const r=suggest(t);if(r&&r.action==='optout'){c.optin=false;save();toast('Marked as not opted in');}vChat();};
+ $('#tp').onclick=()=>{const m=modal(`<h2>Pick template</h2>${S.templates.map(t=>`<div class="card" data-i="${t.id}"><b>${esc(t.name)}</b><div class="mut">${esc(fill(t.body,c))}</div></div>`).join('')}`);m.querySelectorAll('.card').forEach(e=>e.onclick=()=>{const t=S.templates.find(x=>x.id===e.dataset.i);closeM();$('#mt').value=fill(t.body,c);});};}
+// ---------- templates
+function vTemplates(){
+ $('#main').innerHTML=`<div class="sec"><h2>Templates</h2><button class="b s" onclick="editTpl()">+ New</button></div><div class="mut" style="margin-bottom:8px">Use {{name}}, {{shop}} and {{signature}}. They are replaced for each customer.</div>
+ ${S.templates.map(t=>`<div class="card"><div class="sec"><b>${esc(t.name)}</b><span class="pill w">${esc(t.cat)}</span></div><div class="mut" style="margin:6px 0;white-space:pre-wrap">${esc(t.body)}</div><div class="row"><button class="b g s" onclick="editTpl('${t.id}')">Edit</button><button class="b g s" onclick="S.templates=S.templates.filter(x=>x.id!=='${t.id}');save();render()">Delete</button></div></div>`).join('')}`;}
+function editTpl(id){const t=S.templates.find(x=>x.id===id)||{cat:'Utility'};
+ const m=modal(`<h2>${id?'Edit':'New'} template</h2><label>Name</label><input id="tn" value="${esc(t.name||'')}"><label>Type</label><select class="f" id="tc"><option ${t.cat==='Utility'?'selected':''}>Utility</option><option ${t.cat==='Marketing'?'selected':''}>Marketing</option></select><label>Message</label><textarea id="tb" style="min-height:120px">${esc(t.body||'')}</textarea><div class="mut">Marketing templates are only sent to customers with opt-in.</div><button class="b" id="ts" style="width:100%;margin-top:8px">Save</button>`);
+ m.querySelector('#ts').onclick=()=>{const n=m.querySelector('#tn').value.trim(),b=m.querySelector('#tb').value.trim();if(!n||!b){toast('Name and message needed');return;}const o=id?t:{id:uid()};Object.assign(o,{name:n,cat:m.querySelector('#tc').value,body:b});if(!id)S.templates.push(o);save();closeM();render();};}
+// ---------- broadcasts
+function audience(tag,tpl){return S.contacts.filter(c=>(!tag||(c.tags||[]).includes(tag))&&(tpl.cat==='Utility'||c.optin));}
+function vBroadcasts(){
+ $('#main').innerHTML=`<div class="sec"><h2>Broadcasts</h2><button class="b s" onclick="newBc()">+ New</button></div>
+ <div class="warnbox">Broadcast = a queue. The app lines up one personalised message per customer. You tap "Send next", WhatsApp opens with the text ready, you press Send. This avoids spam bans. Offer messages only go to opted-in customers.</div>
+ ${S.campaigns.length?S.campaigns.slice().reverse().map(b=>{const s=b.items.filter(i=>i.state==='sent').length;return `<div class="card" onclick="go('bc','${b.id}')"><div class="sec"><b>${esc(b.name)}</b><span class="mut">${fmt(b.createdAt)}</span></div><div class="bar" style="margin:8px 0"><i style="width:${b.items.length?s*100/b.items.length:0}%"></i></div><div class="mut">${s} of ${b.items.length} sent</div></div>`;}).join(''):'<div class="empty">No broadcasts yet.</div>'}`;}
+function newBc(){if(!S.templates.length){toast('Create a template first');return;}
+ const m=modal(`<h2>New broadcast</h2><label>Name</label><input id="bn" placeholder="Diwali offer"><label>Template</label><select class="f" id="bt">${S.templates.map(t=>`<option value="${t.id}">${esc(t.name)} (${t.cat})</option>`).join('')}</select><label>Audience tag</label><select class="f" id="bg"><option value="">All customers</option>${S.tags.map(t=>`<option>${esc(t)}</option>`).join('')}</select><div class="card" id="bp"></div><button class="b" id="bc" style="width:100%">Create queue</button>`);
+ const upd=()=>{const t=S.templates.find(x=>x.id===m.querySelector('#bt').value);const a=audience(m.querySelector('#bg').value,t);const skipped=S.contacts.filter(c=>(!m.querySelector('#bg').value||(c.tags||[]).includes(m.querySelector('#bg').value))).length-a.length;m.querySelector('#bp').innerHTML=`<b>${a.length}</b> customers will get this.${skipped>0?`<div class="mut">${skipped} skipped (no opt-in).</div>`:''}<div class="mut" style="margin-top:6px;white-space:pre-wrap">${a[0]?esc(fill(t.body,a[0])):''}</div>`;};
+ m.querySelector('#bt').onchange=upd;m.querySelector('#bg').onchange=upd;upd();
+ m.querySelector('#bc').onclick=()=>{if(!guard('broadcast'))return;const t=S.templates.find(x=>x.id===m.querySelector('#bt').value);const a=audience(m.querySelector('#bg').value,t);if(!a.length){toast('No eligible customers');return;}
+  const b={id:uid(),name:m.querySelector('#bn').value.trim()||t.name,tplId:t.id,tag:m.querySelector('#bg').value,createdAt:now(),items:a.map(c=>({cid:c.id,text:fill(t.body,c),state:'pending'}))};S.campaigns.push(b);logEv('Broadcast '+b.name);save();closeM();go('bc',b.id);};}
+function vBc(){const b=S.campaigns.find(x=>x.id===arg);if(!b){go('broadcasts');return;}
+ const next=b.items.find(i=>i.state==='pending');const s=b.items.filter(i=>i.state==='sent').length;
+ $('#main').innerHTML=`<div class="row"><button class="b g s" onclick="go('broadcasts')">‹ Back</button><h2 style="margin:0;flex:1">${esc(b.name)}</h2></div>
+ <div class="card"><div class="bar"><i style="width:${s*100/b.items.length}%"></i></div><div class="mut" style="margin:6px 0">${s} sent · ${b.items.filter(i=>i.state==='pending').length} waiting · ${b.items.filter(i=>i.state==='skipped').length} skipped</div>
+ ${next?`<div class="mut">Next: <b>${esc(cname(S.contacts.find(c=>c.id===next.cid)||{name:'?'}))}</b></div><div class="mut" style="white-space:pre-wrap;margin:4px 0 8px">${esc(next.text)}</div><div class="row"><button class="b" id="sn">Send next</button><button class="b g" id="sk">Skip</button></div>`:'<b style="color:var(--ok)">All done.</b>'}</div>
+ <div class="card">${b.items.map(i=>{const c=S.contacts.find(x=>x.id===i.cid);return `<div class="item"><div style="flex:1">${esc(c?cname(c):'(deleted)')}</div><span class="pill ${i.state==='sent'?'ok':i.state==='skipped'?'no':'w'}">${i.state}</span></div>`;}).join('')}</div>
+ <button class="b d" id="dl">Delete broadcast</button>`;
+ if(next){$('#sn').onclick=()=>{const c=S.contacts.find(x=>x.id===next.cid);if(!c){next.state='skipped';save();vBc();return;}
+  if(!confirm('WhatsApp will open. Did you press Send there? Tap OK to mark as sent after sending.\n\nTap OK now to open WhatsApp.'))return;
+  openWA(c,next.text);next.state='sent';next.at=now();addMsg(c.id,'out',next.text);S.convos[c.id].msgs[S.convos[c.id].msgs.length-1].kind='msg';save();setTimeout(vBc,300);};
+  $('#sk').onclick=()=>{next.state='skipped';save();vBc();};}
+ $('#dl').onclick=()=>{if(!guard('delete'))return;if(confirm('Delete this broadcast?')){S.campaigns=S.campaigns.filter(x=>x.id!==b.id);save();go('broadcasts');}};}
+// ---------- automation
+function vAuto(){
+ $('#main').innerHTML=`<div class="sec"><h2>Automation rules</h2><button class="b s" onclick="editRule()">+ New</button></div>
+ <div class="warnbox">Rule = if the customer's message contains a keyword, the app suggests a ready reply in the chat (one tap to use). Rules with "stop" also switch off their opt-in. Fully automatic replies need the WhatsApp Business API.</div>
+ ${S.rules.map(r=>`<div class="card"><div class="sec"><b>${esc(r.name)}</b><button class="b s ${r.on?'ok':'g'}" onclick="S.rules.find(x=>x.id==='${r.id}').on=!S.rules.find(x=>x.id==='${r.id}').on;save();render()">${r.on?'ON':'OFF'}</button></div><div class="mut">Keywords: ${esc(r.kw)}</div><div style="margin:6px 0;white-space:pre-wrap">${esc(r.reply)}</div><div class="row"><button class="b g s" onclick="editRule('${r.id}')">Edit</button><button class="b g s" onclick="S.rules=S.rules.filter(x=>x.id!=='${r.id}');save();render()">Delete</button></div></div>`).join('')}
+ <h3>Test a message</h3><div class="card"><input id="tm" placeholder="Type a customer message"><button class="b s" id="tt">Test</button><div id="tr" style="margin-top:8px"></div></div>`;
+ $('#tt').onclick=()=>{const t=$('#tm').value;const r=suggest(t);const f=r?null:faqMatch(t);$('#tr').innerHTML=r?`Rule <b>${esc(r.name)}</b>:<div class="mut">${esc(fill(r.reply,null))}</div>`:f?`FAQ bot:<div class="mut">${esc(fill(f.a,null))}</div>`:'<span class="mut">No rule or FAQ matched.</span>';};}
+function editRule(id){const r=S.rules.find(x=>x.id===id)||{on:true};const m=modal(`<h2>${id?'Edit':'New'} rule</h2><label>Name</label><input id="rn" value="${esc(r.name||'')}"><label>Keywords (comma separated)</label><input id="rk" value="${esc(r.kw||'')}"><label>Reply</label><textarea id="rr">${esc(r.reply||'')}</textarea><button class="b" id="rs" style="width:100%">Save</button>`);
+ m.querySelector('#rs').onclick=()=>{const n=m.querySelector('#rn').value.trim(),k=m.querySelector('#rk').value.trim(),p=m.querySelector('#rr').value.trim();if(!n||!k||!p){toast('Fill all fields');return;}const o=id?r:{id:uid(),on:true};Object.assign(o,{name:n,kw:k,reply:p});if(!id)S.rules.push(o);save();closeM();render();};}
+// ---------- FAQ bot
+function vFaq(){
+ $('#main').innerHTML=`<div class="sec"><h2>FAQ bot</h2><button class="b s" onclick="editFaq()">+ New</button></div><div class="mut" style="margin-bottom:8px">Add the questions customers ask often. The bot finds the closest answer on this phone (no internet, no AI key needed). It suggests; you decide to send.</div>
+ <div class="card"><input id="fq" placeholder="Ask a customer question to test"><button class="b s" id="fa">Find answer</button><div id="fr" style="margin-top:8px"></div></div>
+ ${S.faqs.map(f=>`<div class="card"><b>${esc(f.q)}</b><div class="mut" style="margin:6px 0">${esc(f.a)}</div><div class="row"><button class="b g s" onclick="editFaq('${f.id}')">Edit</button><button class="b g s" onclick="S.faqs=S.faqs.filter(x=>x.id!=='${f.id}');save();render()">Delete</button></div></div>`).join('')}`;
+ $('#fa').onclick=()=>{const f=faqMatch($('#fq').value);$('#fr').innerHTML=f?`<b>${esc(f.q)}</b><div>${esc(fill(f.a,null))}</div>`:'<span class="mut">No good match. Add an FAQ for this.</span>';};}
+function editFaq(id){const f=S.faqs.find(x=>x.id===id)||{};const m=modal(`<h2>${id?'Edit':'New'} FAQ</h2><label>Question</label><input id="fqq" value="${esc(f.q||'')}"><label>Answer</label><textarea id="fqa">${esc(f.a||'')}</textarea><button class="b" id="fs" style="width:100%">Save</button>`);
+ m.querySelector('#fs').onclick=()=>{const q=m.querySelector('#fqq').value.trim(),a=m.querySelector('#fqa').value.trim();if(!q||!a){toast('Fill both');return;}const o=id?f:{id:uid()};Object.assign(o,{q,a});if(!id)S.faqs.push(o);save();closeM();render();};}
+// ---------- stats
+function vStats(){
+ const out=[],inn=[];Object.values(S.convos).forEach(c=>c.msgs.forEach(m=>{if(m.kind==='note')return;(m.dir==='out'?out:inn).push(m);}));
+ const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-i);days.push(d.getTime());}
+ const cnt=days.map(d=>out.filter(m=>m.at>=d&&m.at<d+864e5).length);const mx=Math.max(1,...cnt);
+ const sent=S.campaigns.reduce((a,b)=>a+b.items.filter(i=>i.state==='sent').length,0),tot=S.campaigns.reduce((a,b)=>a+b.items.length,0);
+ const byTag=S.tags.map(t=>[t,S.contacts.filter(c=>(c.tags||[]).includes(t)).length]);const tm=Math.max(1,...byTag.map(x=>x[1]));
+ const ob=S.team.map(t=>[t.name,Object.values(S.convos).filter(c=>c.assignee===t.id&&c.status==='open').length]);
+ $('#main').innerHTML=`<h2>Stats</h2><div class="grid"><div class="stat"><b>${out.length}</b><span>Messages sent</span></div><div class="stat"><b>${inn.length}</b><span>Replies logged</span></div><div class="stat"><b>${tot?Math.round(sent*100/tot):0}%</b><span>Broadcast queue done</span></div><div class="stat"><b>${Object.values(S.convos).filter(c=>c.status==='open').length}</b><span>Open chats</span></div></div>
+ <h3>Messages sent, last 7 days</h3><div class="card">${days.map((d,i)=>`<div class="row" style="margin:5px 0"><span class="mut" style="width:44px">${new Date(d).toLocaleDateString('en-IN',{weekday:'short'})}</span><div class="bar grow" style="flex:1"><i style="width:${cnt[i]*100/mx}%"></i></div><b style="width:24px;text-align:right">${cnt[i]}</b></div>`).join('')}</div>
+ <h3>Customers by tag</h3><div class="card">${byTag.map(([t,n])=>`<div class="row" style="margin:5px 0"><span class="mut" style="width:100px">${esc(t)}</span><div class="bar grow" style="flex:1"><i style="width:${n*100/tm}%"></i></div><b style="width:24px;text-align:right">${n}</b></div>`).join('')}</div>
+ <h3>Open chats per team member</h3><div class="card">${ob.map(([n,v])=>`<div class="item"><span style="flex:1">${esc(n)}</span><b>${v}</b></div>`).join('')}</div>`;}
+// ---------- team
+function vTeam(){
+ $('#main').innerHTML=`<div class="sec"><h2>Team</h2><button class="b s" onclick="editMember()">+ Add</button></div><div class="mut" style="margin-bottom:8px">Roles: <b>Owner</b> does everything. <b>Admin</b> manages customers, templates, broadcasts. <b>Agent</b> only chats and edits customers. Use the dropdown at the top to switch who is using the app. This is a simple on-phone switch, not a password login.</div>
+ <div class="card">${S.team.map(t=>`<div class="item"><div class="av">${esc(t.name[0]||'?')}</div><div style="flex:1"><b>${esc(t.name)}</b><div class="mut">${t.role}</div></div><button class="b g s" onclick="editMember('${t.id}')">Edit</button></div>`).join('')}</div>`;}
+function editMember(id){if(!guard('team'))return;const t=S.team.find(x=>x.id===id)||{role:'agent'};const m=modal(`<h2>${id?'Edit':'Add'} member</h2><label>Name</label><input id="mn" value="${esc(t.name||'')}"><label>Role</label><select class="f" id="mr">${['owner','admin','agent'].map(r=>`<option ${t.role===r?'selected':''}>${r}</option>`).join('')}</select><div class="row"><button class="b grow" id="ms">Save</button>${id&&S.team.length>1?'<button class="b d" id="md">Remove</button>':''}</div>`);
+ m.querySelector('#ms').onclick=()=>{const n=m.querySelector('#mn').value.trim();if(!n){toast('Name needed');return;}const o=id?t:{id:uid()};Object.assign(o,{name:n,role:m.querySelector('#mr').value});if(!id)S.team.push(o);save();closeM();render();};
+ const d=m.querySelector('#md');if(d)d.onclick=()=>{S.team=S.team.filter(x=>x.id!==id);if(S.actAs===id)S.actAs=S.team[0].id;Object.values(S.convos).forEach(c=>{if(c.assignee===id)c.assignee=null;});save();closeM();render();};}
+// ---------- settings
+function vSettings(){
+ $('#main').innerHTML=`<h2>Settings</h2><div class="card"><label>Shop name</label><input id="s1" value="${esc(S.settings.shop)}"><label>Signature added to messages</label><input id="s2" value="${esc(S.settings.signature)}"><label>Default country code</label><input id="s3" value="${esc(S.settings.cc)}" inputmode="numeric"><button class="b" id="ss">Save</button></div>
+ <h3>Backup</h3><div class="card"><div class="mut" style="margin-bottom:8px">All data stays on this phone. Save a backup file to Downloads regularly.</div><div class="row" style="flex-wrap:wrap"><button class="b" id="be">Save backup</button><button class="b g" id="bi">Restore backup</button><button class="b g" id="bx">Contacts CSV</button></div><input type="file" id="bf" accept=".json,application/json" style="display:none"></div>
+ <h3>Real automatic WhatsApp (needs outside setup)</h3><div class="card mut">Receiving customer messages automatically and sending without tapping needs the official <b>WhatsApp Business Cloud API</b> from Meta (a Meta developer app, a verified business number and an access token) and a small server to receive messages. This app does not have those, so nothing is sent or received without you. If you later get them, this app can be extended to use them.</div>
+ <h3>Danger</h3><div class="card"><button class="b d" id="rs">Erase all data</button></div>`;
+ $('#ss').onclick=()=>{if(!guard('settings'))return;S.settings.shop=$('#s1').value;S.settings.signature=$('#s2').value;S.settings.cc=$('#s3').value.replace(/\D/g,'')||'91';save();toast('Saved');};
+ const dl=(name,mime,text)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:mime}));a.download=name;document.body.appendChild(a);a.click();a.remove();};
+ $('#be').onclick=()=>dl('noor-automation-backup-'+new Date().toISOString().slice(0,10)+'.json','application/json',JSON.stringify(S));
+ $('#bx').onclick=()=>dl('noor-contacts.csv','text/csv','name,phone,tags,optin\n'+S.contacts.map(c=>[c.name,c.phone,(c.tags||[]).join('|'),c.optin?'yes':'no'].map(v=>'"'+String(v||'').replace(/"/g,'""')+'"').join(',')).join('\n'));
+ $('#bi').onclick=()=>{if(guard('settings'))$('#bf').click();};
+ $('#bf').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.contacts||!d.settings)throw 0;S=d;save();load();toast('Restored');render();}catch(x){toast('Not a valid backup');}};r.readAsText(f);};
+ $('#rs').onclick=()=>{if(!guard('team'))return;if(confirm('Erase everything on this phone?')){S=defaults();save();render();}};}
+load();render();
+</script></body></html>
