@@ -1,0 +1,23 @@
+name: bootstrap
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  b:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          set -e
+          git config user.name noor-bot
+          git config user.email noor-bot@users.noreply.github.com
+          Z=$(ls *noor-src.zip | head -1)
+          mkdir /tmp/x
+          unzip -q "$Z" -d /tmp/x
+          cp -r /tmp/x/. .
+          git rm -q --cached "$Z" || true
+          rm "$Z"
+          git add -A
+          git commit -m 'Add Noor Automation source'
+          git push
